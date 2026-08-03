@@ -10,7 +10,7 @@ class MetaCost(object):
     sensibile ai costi d'errore tramite relabeling basato su bootstrap ensemble.
     
     """
-    def __init__(self, S, L, C, m=50, n=1, p=True, q=True):
+    def __init__(self, S, L, C, m=50, n=1, p=True, q=True, random_state=None):
         """
         :param S: Training set
         :param L: Algoritmo/modello di classificazione
@@ -19,18 +19,19 @@ class MetaCost(object):
         :param m: Numero di campioni bootstrap da generare (default 50)
         :param n: Numero di esempi in ogni campione bootstrap
         :param p: True se il modello L genera probabilità (predict_proba)
+        :param random_state: seed per la riproducibilità dei campioni bootstrap
         """
+
         if not isinstance(S, pd.DataFrame):
             raise ValueError('S must be a DataFrame object')
-        new_index = list(range(len(S)))
-        S.index = new_index
-        self.S = S
+        self.S = S.reset_index(drop=True).copy()   # copia: non modifica il DataFrame del chiamante
         self.L = L
         self.C = C
         self.m = m
         self.n = len(S) * n
         self.p = p
         self.q = q
+        self.rng = np.random.default_rng(random_state)
 
     def fit(self, flag, num_class):
         """
@@ -52,7 +53,7 @@ class MetaCost(object):
         # 1. GENERAZIONE DELL'ENSEMBLE E STIMA DELLE PROBABILITÀ
         for i in range(self.m):
             # Estrazione con reinserimento (Bootstrap)
-            sample_idx = np.random.choice(N, size=self.n, replace=True)
+            sample_idx = self.rng.choice(N, size=self.n, replace=True)
             X_boot = X_full[sample_idx]
             y_boot = y_full[sample_idx]
 

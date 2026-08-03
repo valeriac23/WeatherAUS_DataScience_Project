@@ -1,4 +1,4 @@
-# WeatherAUS_DataScience_Project# WeatherAUS — Data Science Project
+# WeatherAUS — Data Science Project
 
 Progetto di Data Science sul dataset **Rain in Australia (WeatherAUS)**: un unico dataset meteorologico affrontato con tre famiglie di tecniche — **classificazione**, **clustering** e **analisi di serie temporali**.
 
@@ -27,11 +27,10 @@ WeatherAUS_DataScience_Project/
 │   ├── eda_data_analysis.ipynb      # Analisi esplorativa (EDA)
 │   ├── classification.ipynb         # Classificazione binaria di RainTomorrow
 │   ├── clustering.ipynb             # Clustering dei regimi meteorologici
-│   ├── MetaCost.py                  # Implementazione dell'algoritmo MetaCost
-│   └── images/                      # Grafici esportati dai notebook
+│   └── MetaCost.py                  # Implementazione dell'algoritmo MetaCost
 ├── temporal_series/
 │   └── time_series.ipynb            # Serie temporali (SARIMAX) su Temp3pm a Sydney
-|── dataset/                     # weatherAUS.csv (da scaricare, non versionato)
+├── dataset/                     # weatherAUS.csv (da scaricare, non versionato)
 ├── README.md
 └── .gitignore
 ```
@@ -48,7 +47,7 @@ WeatherAUS_DataScience_Project/
 
 - **Modello migliore:** XGBoost (selezionato per F1 in CV), con ottimizzazione della soglia decisionale.
 - **Prestazioni sul test set** (classe *pioggia*): **F1 ≈ 0,66**, precision 0,63, recall 0,70; **ROC-AUC 0,887**, **PR-AUC 0,742**, accuracy 0,84.
-- **Alternativa cost-sensitive:** `MetaCost` (matrice dei costi che penalizza 5× i falsi negativi) spinge la **recall fino a ≈ 0,82**, utile quando mancare una giornata di pioggia è più costoso di un falso allarme.
+- **Alternativa cost-sensitive:** `MetaCost` (matrice dei costi che penalizza 5× i falsi negativi) spinge la **recall fino a 0,815**, utile quando mancare una giornata di pioggia è più costoso di un falso allarme.
 - Strategie di bilanciamento confrontate: `class_weight`, SMOTE, NearMiss+SMOTE, LDA.
 
 ### 3. Clustering — regimi meteorologici
@@ -89,12 +88,13 @@ Passi:
    git clone https://github.com/valeriac23/WeatherAUS_DataScience_Project.git
    cd WeatherAUS_DataScience_Project
    ```
-2. Scarica `weatherAUS.csv` da Kaggle e mettilo in `dataset/`.
+2. Scarica `weatherAUS.csv` da Kaggle e mettilo in `dataset/` nella root del progetto.
 3. Avvia Jupyter ed esegui i notebook nell'ordine consigliato: EDA → classificazione → clustering → serie temporali.
    ```bash
    jupyter notebook
    ```
 
+Tutti i risultati sono riproducibili: seed fissato (RANDOM_STATE = 42) in ogni notebook, incluso il bootstrap di MetaCost.
 ---
 
 ## Autori
